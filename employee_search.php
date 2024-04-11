@@ -30,14 +30,8 @@
     </style>
 </head>
 <body>
-<div class="navbar">
-        <a href="home.php">Home</a>
-        <a href="order_dates.php">Order Dates</a>
-        <a href="customer_search_result.php">Customer Search</a>
-        <a href="estimates.php">Estimates</a>
-        <a href="order-summary.php">Order Summary</a>
-        <a href="item-search.php">Item Search</a>
-    </div>
+<?php include 'nav.html'; ?>
+
     <div class="search-container">
         <h2>Search Employees by Last Name</h2>
         <form action="" method="post">
