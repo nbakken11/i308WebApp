@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Dates</title>
-    <link rel="stylesheet" href="style.css"> <!-- Make sure the file path is correct -->
+    <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
 <?php include 'nav.html'; ?>
@@ -13,11 +13,10 @@
     <div class="search-container">
         <h2>Search Orders by Date</h2>
         <?php
-        // Initialize database connection variables
         $servername = "db.luddy.indiana.edu";
-        $username = "i308s24_nbakken"; // replace with your database username
-        $password = "my+sql=i308s24_nbakken"; // replace with your database password
-        $dbname = "i308s24_nbakken"; // replace with your database name
+        $username = "i308s24_nbakken";
+        $password = "my+sql=i308s24_nbakken";
+        $dbname = "i308s24_nbakken"; 
 
         // Create connection
         $con = new mysqli($servername, $username, $password, $dbname);

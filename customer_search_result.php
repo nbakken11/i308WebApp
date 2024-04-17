@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css"> <!-- Make sure the file path is correct -->
+    <link rel="stylesheet" href="style.css">
     <title>Search by Last Name</title>
     <style>
-        /* Style for the tables */
         .container {
             display: flex;
         }
@@ -31,111 +30,86 @@
 <body>
 <?php include 'nav.html'; ?>
 
-    <div class="search-container">
-        <h2>Search Inventory by Customer's Last Name</h2>
-        <form action="" method="post">
-            Last Name: <input type="text" name="lname" required>
-            <input type="submit" name="submit" value="Search">
-        </form>
+<div class="search-container">
+    <h2>Search Inventory by Customer's Last Name</h2>
+    <form action="" method="post">
+        Last Name: <input type="text" name="lname" required>
+        <input type="submit" name="submit" value="Search">
+    </form>
 
-        <!-- Display the search results -->
-        <div class="container">
-            <!-- Last names table -->
-            <div>
-                <h3>Last Names of Customers:</h3>
-                <table>
-                    <?php
-                    // Initialize variables for the database connection
-                    $servername = "db.luddy.indiana.edu";
-                    $username = "i308s24_nbakken"; // Replace with your database username
-                    $password = "my+sql=i308s24_nbakken"; // Replace with your database password
-                    $dbname = "i308s24_nbakken"; // Replace with your database name
-
-                    // Establish a new database connection
-                    $con = mysqli_connect($servername, $username, $password, $dbname);
-                    if (!$con) {
-                        die("Connection failed: " . mysqli_connect_error());
-                    }
-
-                    // Create the query to retrieve last names of all employees
-                    $query = "SELECT lname FROM customers";
-                    $result = mysqli_query($con, $query);
-
-                    // Check if there are results
-                    if (mysqli_num_rows($result) > 0) {
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            echo "<tr><td>" . $row['lname'] . "</td></tr>";
-                        }
-                    } else {
-                        echo "<tr><td>No employees found.</td></tr>";
-                    }
-
-                    // Close connection
-                    mysqli_close($con);
-                    ?>
-                </table>
-            </div>
-            
-            <!-- Search results table -->
-            <div>
+    <div class="container">
+        <div>
+            <h3>Customer Names:</h3>
+            <table>
                 <?php
-                if (isset($_POST['submit'])) {
-                    // Initialize variables for the database connection
-                    $servername = "db.luddy.indiana.edu";
-                    $username = "i308s24_nbakken"; // Replace with your database username
-                    $password = "my+sql=i308s24_nbakken"; // Replace with your database password
-                    $dbname = "i308s24_nbakken"; // Replace with your database name
-
-                    // Establish a new database connection
-                    $con = mysqli_connect($servername, $username, $password, $dbname);
-                    if (!$con) {
-                        die("Connection failed: " . mysqli_connect_error());
-                    }
-
-                    // Sanitize the input to protect against SQL injections
-                    $lname = mysqli_real_escape_string($con, $_POST['lname']);
-
-                    // Create the query using prepared statements
-                    $stmt = $con->prepare("SELECT i.id, i.quantity, i.sale_price, i.purchase_cost, i.description, c.fname, c.lname, cp.phone, ce.email FROM inventory AS i JOIN customers AS c ON i.cust_id = c.id LEFT JOIN customer_phone AS cp ON c.id = cp.cust_id LEFT JOIN customer_email AS ce ON c.id = ce.cust_email WHERE c.lname = ?");
-                    $stmt->bind_param("s", $lname);
-
-                    // Execute the query
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-
-                    // Check if there are results
-                    if ($result->num_rows > 0) {
-                        // Start the table to display the results
-                        echo "<h3>Search Results for $lname:</h3>";
-                        echo "<table>";
-                        echo "<tr><th>Customer Name</th><th>Phone</th><th>Email</th>";
-                        // <th>Purchase Cost</th></tr>
-
-                        // Output data of each row
-                        while($row = $result->fetch_assoc()) {
-                            echo "<tr>";
-                           
-                            echo "<td>" . $row['fname'] . " " . $row['lname'] . " (" . $row['id'] . ")" . "</td>";
-                            // echo "<td>" . $row['description'] . "</td>";
-                            // echo "<td>" . $row['quantity'] . "</td>";
-                            // echo "<td>" . $row['sale_price'] . "</td>";
-                            // echo "<td>" . $row['purchase_cost'] . "</td>";
-                            echo "<td>" . "(812". $row['phone'] . "</td>";
-                            echo "<td>" . $row['email'] . "</td>";
-                            echo "</tr>";
-                        }
-                        echo "</table>";
-                    } else {
-                        echo "No results found for $lname.";
-                    }
-
-                    // Close statement and connection
-                    $stmt->close();
-                    $con->close();
+                $servername = "db.luddy.indiana.edu";
+                $username = "i308s24_nbakken";
+                $password = "my+sql=i308s24_nbakken";
+                $dbname = "i308s24_nbakken";
+                $con = mysqli_connect($servername, $username, $password, $dbname);
+                if (!$con) {
+                    die("Connection failed: " . mysqli_connect_error());
                 }
+                $query = "SELECT CONCAT(fname, ' ', lname) AS customer_name FROM customers";
+                $result = mysqli_query($con, $query);
+                if (mysqli_num_rows($result) > 0) {
+                    echo "<tr><th>Customer Names</th></tr>";
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<tr><td>" . $row['customer_name'] . "</td></tr>";
+                    }
+                } else {
+                    echo "<tr><td>No customers found.</td></tr>";
+                }
+                mysqli_close($con);
                 ?>
-            </div>
+            </table>
+        </div>
+
+        <div>
+            <?php
+            if (isset($_POST['submit'])) {
+                $servername = "db.luddy.indiana.edu";
+                $username = "i308s24_nbakken";
+                $password = "my+sql=i308s24_nbakken";
+                $dbname = "i308s24_nbakken";
+                $con = mysqli_connect($servername, $username, $password, $dbname);
+                if (!$con) {
+                    die("Connection failed: " . mysqli_connect_error());
+                }
+                $lname = mysqli_real_escape_string($con, $_POST['lname']);
+                $stmt = $con->prepare("SELECT CONCAT(c.fname, ' ', c.lname) AS customer_name, 
+                    SUM(i.quantity) AS total_quantity,
+                    SUM(i.sale_price) AS total_sale_price,
+                    SUM(i.purchase_cost) AS total_purchase_cost
+                    FROM customers AS c
+                    JOIN inventory AS i ON c.id = i.cust_id
+                    WHERE c.lname = ?
+                    GROUP BY c.id");
+                $stmt->bind_param("s", $lname);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                if ($result->num_rows > 0) {
+                    echo "<h3>Search Results for $lname:</h3>";
+                    echo "<table>";
+                    echo "<tr><th>Customer Name</th><th>Total Quantity</th><th>Total Sale Price</th><th>Total Purchase Cost</th></tr>";
+                    while($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row['customer_name'] . "</td>";
+                        echo "<td>" . $row['total_quantity'] . "</td>";
+                        echo "<td>" ."$" . $row['total_sale_price'] . "</td>";
+                        echo "<td>" . $row['total_purchase_cost'] . "</td>";
+                        echo "</tr>";
+                    }
+                    echo "</table>";
+                } else {
+                    echo "No results found for $lname.";
+                }
+                $stmt->close();
+                $con->close();
+            }
+            ?>
         </div>
     </div>
+</div>
 </body>
 </html>

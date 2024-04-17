@@ -1,0 +1,28 @@
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse; /* Eliminate the space between table borders */
+    margin-top: 20px; /* Spacing above the table */
+    background-color: white; /* Table background */
+}
+
+th, td {
+    border: 1px solid #00bcd4; /* Cyan border for cells */
+    padding: 8px; /* Spacing inside cells */
+    text-align: left; /* Align text to the left inside cells */
+}
+
+th {
+    background-color: #00bcd4; /* Cyan background for header */
+    color: white; /* Text color for header */
+}
+
+tr:nth-child(even) {
+    background-color: #e0f7fa; /* Light cyan background for even rows */
+}
+
+tr:hover {
+    background-color: #b2ebf2; /* Lighter cyan for row hover */
+}
+
+/* Add additional table styles as needed */
